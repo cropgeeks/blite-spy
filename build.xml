@@ -1,0 +1,49 @@
+<project name="blitespy" default="compile" basedir=".">
+
+	<property file="build.properties" />
+
+	<property name="src" location="src"/>
+	<property name="lib" location="lib"/>
+	<property name="jar" location="${lib}/blitespy.jar"/>
+	<property name="cls" location="classes"/>
+
+	<target name="init">
+		<mkdir dir="${cls}"/>
+	</target>
+
+	<!-- Development classpath -->
+	<path id="project.classpath">
+		<fileset dir="${lib}">
+			<exclude name="**/blitespy.jar"/>
+		</fileset>
+	</path>
+
+	<!-- Runtime classpath (manifest formatted) -->
+	<manifestclasspath property="jar.classpath" jarfile="${jar}">
+        <classpath>
+        	<fileset dir="${lib}"/>
+        </classpath>
+    </manifestclasspath>
+
+	<target name="compile" depends="init">
+		<javac srcdir="${src}" destdir="${cls}" source="11" target="11" debug="true" includeantruntime="false">
+			<classpath refid="project.classpath"/>
+		</javac>
+	</target>
+
+	<target name="clean">
+		<delete includeemptydirs="true">
+			<fileset dir="${cls}" includes="**/*"/>
+		</delete>
+	</target>
+
+	<target name="jar" depends="clean, compile">
+		<jar jarfile="${jar}">
+			<fileset dir="${cls}"/>
+			<manifest>
+				<attribute name="Class-Path" value="${jar.classpath}"/>
+			</manifest>
+		</jar>
+	</target>
+
+</project>
