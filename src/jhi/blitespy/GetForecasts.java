@@ -58,6 +58,12 @@ public class GetForecasts
 				+ "windDirection REAL, "
 				+ "windSpeed REAL, "
 				+ "precipitation REAL, "
+				+ "dailyMinTemperature REAL, "
+				+ "dailyHumidityHours REAL, "
+				+ "dailyMinTemperatureFlag REAL, "
+				+ "dailyHumidityHoursFlag REAL, "
+				+ "dailyMinTemperatureNearMissFlag REAL, "
+				+ "dailyHumidityHoursNearMissFlag REAL, "
 				+ "INDEX idx_time (time), "
 				+ "CONSTRAINT forecasts_ibfk_locations FOREIGN KEY (location_id) REFERENCES locations (id) ON DELETE CASCADE);");
 			s.close();
