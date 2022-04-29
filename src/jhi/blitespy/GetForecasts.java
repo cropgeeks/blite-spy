@@ -23,11 +23,12 @@ public class GetForecasts
 		String url = args[0];
 		String username = args[1];
 		String password = args[2];
+		String useragent = args[3];
 
-		GetForecasts test = new GetForecasts();
+		GetForecasts forecasts = new GetForecasts();
 
-		test.initDatabase(url, username, password);
-		test.update();
+		forecasts.initDatabase(url, username, password);
+		forecasts.update(useragent);
 	}
 
 	private void initDatabase(String url, String username, String password)
@@ -76,7 +77,7 @@ public class GetForecasts
 			+ "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?);");
 	}
 
-	private void update()
+	private void update(String useragent)
 		throws Exception
 	{
 		long now = System.currentTimeMillis();
@@ -99,14 +100,18 @@ public class GetForecasts
 			float alt = rs.getFloat(5);
 
 			System.out.println("Getting forecast for " + name);
-			getForecast(id, lat, lon, now);
+			getForecast(id, lat, lon, now, useragent);
+
+			// Wait 2s between requests
+			try { Thread.sleep(2000); }
+			catch (InterruptedException e) {}
 		}
 
 		rs.close();
 		s.close();
 	}
 
-	private void getForecast(long id, float lat, float lon, long now)
+	private void getForecast(long id, float lat, float lon, long now, String useragent)
 		throws Exception
 	{
 		String webPage = "https://api.met.no/weatherapi/locationforecast/2.0/compact?lat="+lat+"&lon="+lon;
@@ -115,7 +120,7 @@ public class GetForecasts
 		URL url = new URL(webPage);
 		HttpURLConnection c = (HttpURLConnection)url.openConnection();
 
-		c.setRequestProperty("User-Agent", "Hutton");
+		c.setRequestProperty("User-Agent", useragent);
 		c.setRequestProperty("Accept", "application/json");
 
         try (InputStream is = c.getInputStream();
