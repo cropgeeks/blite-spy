@@ -94,7 +94,7 @@ public class GetForecasts
 
 
 		// Loop over the locations
-		PreparedStatement s = c.prepareStatement("SELECT * FROM locations;");
+		PreparedStatement s = c.prepareStatement("SELECT * FROM locations WHERE forecast = TRUE;");
 		ResultSet rs = s.executeQuery();
 
 		while (rs.next())
