@@ -89,6 +89,7 @@ public class GetForecasts
 		long now = System.currentTimeMillis();
 
 		// Remove existing future data
+		// (divide by 1000 because Java using ms and MYSQL using seconds)
 		PreparedStatement delStatement = c.prepareStatement("DELETE from forecasts WHERE time > FROM_UNIXTIME("+(now/1000)+");");
 		delStatement.execute();
 
