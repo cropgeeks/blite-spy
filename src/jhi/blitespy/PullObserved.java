@@ -82,11 +82,11 @@ public class PullObserved
 
 		while (rs.next())
 		{
-			long id = rs.getLong(1);
-			String name = rs.getString(2);
-			float lat = rs.getFloat(3);
-			float lon = rs.getFloat(4);
-			float alt = rs.getFloat(5);
+			long id = rs.getLong("id");
+			String name = rs.getString("name");
+			float lat = rs.getFloat("latitude");
+			float lon = rs.getFloat("longitude");
+			float alt = rs.getFloat("altitude");
 
 			System.out.println("Updating data for " + name);
 			pullFromLoraDB(id);
@@ -113,7 +113,7 @@ public class PullObserved
 
 		while (rs.next())
 		{
-			lastTime = rs.getTimestamp(3).getTime();
+			lastTime = rs.getTimestamp("time").getTime();
 			break;
 		}
 
@@ -141,9 +141,9 @@ public class PullObserved
 		// Pull each row from the LORA database table and use it to populate
 		while (rs.next())
 		{
-			Timestamp timestamp = rs.getTimestamp(4);
-			float airTemperature = rs.getFloat(18);
-			float humidity = rs.getFloat(21);
+			Timestamp timestamp = rs.getTimestamp("publishedAt");
+			float airTemperature = rs.getFloat("airTemperature");
+			float humidity = rs.getFloat("relativeHumidity");
 
 			ips.setLong(1, locationId);
 			ips.setTimestamp(2, timestamp);
